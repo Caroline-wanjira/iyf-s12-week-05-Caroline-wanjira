@@ -201,7 +201,7 @@ function addNavItem(text, href) {
 addNavItem("Blog", "/blog");
 addNavItem("Portfolio", "/portfolio");
 
-// Exercise 2: Removing Elements (last, because it deletes things)
+// Exercise 2:
 {
   // Remove an element
   const footer = document.querySelector("footer");
@@ -309,7 +309,7 @@ resetBtn.addEventListener("click", () => {
 
 document.body.append(counterDisplay, plusBtn, minusBtn, resetBtn);
 
-// ===== Task 10.2: The Event Object =====
+// Task 10.2
 document.addEventListener("click", function (event) {
   console.log("Target:", event.target);
   console.log("Current Target:", event.currentTarget);
@@ -360,4 +360,65 @@ document.addEventListener("keydown", (event) => {
     shortcutForm.requestSubmit();
   }
 });
+// Task 10.3
+const bubbleDemo = document.createElement("div");
+bubbleDemo.innerHTML = `
+  <div id="grandparent">Grandparent
+    <div id="parent">Parent
+      <div id="child">Child</div>
+    </div>
+  </div>
+`;
+document.body.appendChild(bubbleDemo);
 
+document.getElementById("grandparent").addEventListener("click", () => {
+  console.log("Grandparent clicked");
+});
+document.getElementById("parent").addEventListener("click", () => {
+  console.log("Parent clicked");
+});
+document.getElementById("child").addEventListener("click", () => {
+  console.log("Child clicked");
+});
+
+const taskInput = document.createElement("input");
+taskInput.placeholder = "New task";
+const addTaskBtn = document.createElement("button");
+addTaskBtn.textContent = "Add";
+const taskList = document.createElement("ul");
+taskList.id = "task-list";
+document.body.append(taskInput, addTaskBtn, taskList);
+
+function addTask(text) {
+  const li = document.createElement("li");
+  const span = document.createElement("span");
+  span.textContent = text;
+  const delBtn = document.createElement("button");
+  delBtn.textContent = "Delete";
+  delBtn.classList.add("delete-btn");
+  li.append(span, delBtn);
+  taskList.appendChild(li);
+}
+
+addTask("Learn event delegation");
+addTask("Build the task list");
+
+// Add new tasks
+addTaskBtn.addEventListener("click", () => {
+  const text = taskInput.value.trim();
+  if (text === "") return;
+  addTask(text);
+  taskInput.value = "";
+});
+
+// ONE listener on the parent ul (delegation)
+taskList.addEventListener("click", (event) => {
+  const li = event.target.closest("li");
+  if (!li) return;
+
+  if (event.target.matches(".delete-btn")) {
+    li.remove();
+  } else {
+    li.classList.toggle("completed");
+  }
+});
