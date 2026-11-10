@@ -308,3 +308,56 @@ resetBtn.addEventListener("click", () => {
 });
 
 document.body.append(counterDisplay, plusBtn, minusBtn, resetBtn);
+
+// ===== Task 10.2: The Event Object =====
+document.addEventListener("click", function (event) {
+  console.log("Target:", event.target);
+  console.log("Current Target:", event.currentTarget);
+  console.log("Type:", event.type);
+  console.log("Position:", event.clientX, event.clientY);
+
+  // Prevent default behavior
+  event.preventDefault();
+
+  // Stop propagation (bubbling)
+  event.stopPropagation();
+});
+
+document.addEventListener("keydown", function (event) {
+  console.log("Key:", event.key);
+  console.log("Code:", event.code);
+  console.log("Shift:", event.shiftKey);
+  console.log("Ctrl:", event.ctrlKey);
+  console.log("Alt:", event.altKey);
+});
+// A small form to test the shortcuts
+const shortcutForm = document.createElement("form");
+shortcutForm.innerHTML = `
+  <input type="text" placeholder="Name">
+  <input type="email" placeholder="Email">
+`;
+document.body.appendChild(shortcutForm);
+
+shortcutForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  console.log("Form submitted!");
+});
+
+document.addEventListener("keydown", (event) => {
+  // Ctrl+S: show "Saved!" (stop the browser's save dialog)
+  if (event.ctrlKey && event.key.toLowerCase() === "s") {
+    event.preventDefault();
+    alert("Saved!");
+  }
+
+  // Escape: clear all form inputs
+  if (event.key === "Escape") {
+    shortcutForm.reset();
+  }
+
+  // Ctrl+Enter: submit the form
+  if (event.ctrlKey && event.key === "Enter") {
+    shortcutForm.requestSubmit();
+  }
+});
+
