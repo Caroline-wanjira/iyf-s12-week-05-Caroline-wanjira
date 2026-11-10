@@ -220,10 +220,12 @@ addNavItem("Portfolio", "/portfolio");
     article.removeChild(article.firstChild);
   }
 }
+  const playground = document.getElementById("playground");
+
 // ===== Task 10.1
 const clickButton = document.createElement("button");
 clickButton.textContent = "Click Me";
-document.body.appendChild(clickButton);
+playground.appendChild(clickButton);
 
 // Adding event listeners
 clickButton.addEventListener("click", function () {
@@ -247,11 +249,11 @@ const box = document.createElement("div");
 box.textContent = "Hover, click or double-click me";
 box.style.padding = "20px";
 box.style.border = "1px solid gray";
-document.body.appendChild(box);
+playground.appendChild(box);
 
 const nameInput = document.createElement("input");
 nameInput.placeholder = "Type here";
-document.body.appendChild(nameInput);
+playground.appendChild(nameInput);
 
 function handler(event) {
   console.log(event.type);
@@ -336,7 +338,7 @@ shortcutForm.innerHTML = `
   <input type="text" placeholder="Name">
   <input type="email" placeholder="Email">
 `;
-document.body.appendChild(shortcutForm);
+playground.appendChild(shortcutForm);
 
 shortcutForm.addEventListener("submit", (event) => {
   event.preventDefault();
@@ -369,7 +371,7 @@ bubbleDemo.innerHTML = `
     </div>
   </div>
 `;
-document.body.appendChild(bubbleDemo);
+playground.appendChild(bubbleDemo);
 
 document.getElementById("grandparent").addEventListener("click", () => {
   console.log("Grandparent clicked");
@@ -420,5 +422,79 @@ taskList.addEventListener("click", (event) => {
     li.remove();
   } else {
     li.classList.toggle("completed");
+  }
+});
+
+// Task 10.4
+const contactForm = document.getElementById("contact-form");
+const contactName = document.getElementById("name");
+const contactEmail = document.getElementById("email");
+const formMessage = document.getElementById("form-message");
+const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+function showError(input, message) {
+  input.classList.add("error");
+  let msg = input.parentElement.querySelector(".error-message");
+  if (!msg) {
+    msg = document.createElement("small");
+    msg.className = "error-message";
+    input.parentElement.appendChild(msg);
+  }
+  msg.textContent = message;
+}
+
+function clearError(input) {
+  input.classList.remove("error");
+  const msg = input.parentElement.querySelector(".error-message");
+  if (msg) msg.remove();
+}
+
+function showSuccess(message) {
+  formMessage.textContent = message;
+}
+
+// Real-time validation
+contactName.addEventListener("input", (event) => {
+  if (event.target.value.trim().length < 2) {
+    showError(contactName, "Name must be at least 2 characters");
+  } else {
+    clearError(contactName);
+  }
+});
+
+contactEmail.addEventListener("input", (event) => {
+  if (!emailRegex.test(event.target.value)) {
+    showError(contactEmail, "Please enter a valid email");
+  } else {
+    clearError(contactEmail);
+  }
+});
+
+// Check every field when the form is submitted
+function isValid(data) {
+  let ok = true;
+  if (data.name.trim().length < 2) {
+    showError(contactName, "Name must be at least 2 characters");
+    ok = false;
+  }
+  if (!emailRegex.test(data.email)) {
+    showError(contactEmail, "Please enter a valid email");
+    ok = false;
+  }
+  return ok;
+}
+
+// Form submission
+contactForm.addEventListener("submit", (event) => {
+  event.preventDefault(); // stop the page from reloading
+  formMessage.textContent = "";
+
+  const formData = new FormData(contactForm);
+  const data = Object.fromEntries(formData);
+  console.log("Form data:", data);
+
+  if (isValid(data)) {
+    showSuccess("Form submitted successfully!");
+    contactForm.reset();
   }
 });

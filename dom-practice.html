@@ -7,6 +7,10 @@
     <style>
         .highlight { background-color: yellow; }
         .container { padding: 20px; border: 1px solid #ccc; }
+        .error-message {display: block; color: red; font-size:13px;}
+        .form-group { margin:0 0 12px }
+        label { display: block; font-weight: bold; }
+
     </style>
 </head>
 <body>
@@ -27,15 +31,29 @@
             <p class="content highlight">A simple budget starts by giving every shilling of your income a purpose either spending ,saving or investing.</p>
             <p class="content">Saving a small amount each month even before you feel ready, builds the habit that grows into a real financial security.</p>
         </article>
+<section id="playground" aria-labelledby="playground-title">
+    <h2 id="playground-title">Events Playground</h2>
+</section>
 
-        <section>
-            <h2>Form Section</h2>
-            <form id="contact-form">
-                <input type="text" id="name" name="name" placeholder="Name">
-                <input type="email" id="email" name="email" placeholder="Email">
-                <button type="submit">Submit</button>
-            </form>
-        </section>
+<section id="contact" aria-labelledby="form-title">
+    <h2 id="form-title">Form Section</h2>
+    <form id="contact-form" novalidate>
+        <fieldset>
+            <legend>Contact details</legend>
+            <p class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" autocomplete="name" placeholder="Name">
+            </p>
+            <p class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" autocomplete="email" placeholder="Email">
+            </p>
+        </fieldset>
+        <button type="submit">Submit</button>
+        <p id="form-message" role="status" aria-live="polite"></p>
+    </form>
+</section>
+              
     </main>
 
     <footer>
