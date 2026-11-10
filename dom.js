@@ -147,3 +147,164 @@ console.log("P5:", footer.parentElement);             // body
 // rule:textContent for anything that came from a user or an API.
 // innerHTML ONLY FOR HTML you wrote yourself.
 
+//  Task 9.4
+
+// Exercise 1: Creating Elements
+{
+  const article = document.querySelector("article");
+
+  // Task 9.3 emptied the article, so rebuild it first
+  article.innerHTML = `
+    <h2 class="title">Why Every Shilling Needs a Job</h2>
+    <p class="content">This is the first paragraph.</p>
+    <p class="content">This is the second paragraph.</p>
+  `;
+
+  // Create new element
+  const newParagraph = document.createElement("p");
+  newParagraph.textContent = "This is a new paragraph!";
+  newParagraph.className = "content highlight";
+
+  // Add to the page
+  article.appendChild(newParagraph);   // add at end
+
+  // Insert before another element
+  const firstParagraph = article.querySelector("p");
+  article.insertBefore(newParagraph, firstParagraph);  // before first p
+
+  // Modern insertion methods
+  article.prepend(newParagraph);              // first child
+  article.append(newParagraph);               // last child
+  firstParagraph.before(newParagraph);        // before sibling
+  firstParagraph.after(newParagraph);         // after sibling
+}
+
+// Exercise 3: Cloning Elements
+{
+  const navItem = document.querySelector(".nav-link").parentElement;
+  const clone = navItem.cloneNode(true);      // true = deep clone
+  clone.querySelector("a").textContent = "New Link";
+  document.querySelector(".nav-list").appendChild(clone);
+}
+
+// Build: function that adds a nav item dynamically
+function addNavItem(text, href) {
+  const li = document.createElement("li");
+  const a = document.createElement("a");
+  a.className = "nav-link";
+  a.textContent = text;
+  a.href = href;
+  li.appendChild(a);
+  document.querySelector(".nav-list").appendChild(li);
+}
+
+addNavItem("Blog", "/blog");
+addNavItem("Portfolio", "/portfolio");
+
+// Exercise 2: Removing Elements (last, because it deletes things)
+{
+  // Remove an element
+  const footer = document.querySelector("footer");
+  footer.remove();
+
+  // Remove child
+  const nav = document.querySelector("nav");
+  const lastLink = nav.querySelector("li:last-child");
+  lastLink.parentElement.removeChild(lastLink);
+
+  // Clear all children
+  const article = document.querySelector("article");
+  article.innerHTML = "";   // simple but rebuilds the DOM
+  // OR
+  while (article.firstChild) {
+    article.removeChild(article.firstChild);
+  }
+}
+// ===== Task 10.1
+const clickButton = document.createElement("button");
+clickButton.textContent = "Click Me";
+document.body.appendChild(clickButton);
+
+// Adding event listeners
+clickButton.addEventListener("click", function () {
+  console.log("Button clicked!");
+});
+
+// Arrow function
+clickButton.addEventListener("click", () => {
+  console.log("Clicked again!");
+});
+
+// Named function (can be removed later)
+function handleClick() {
+  console.log("Handled!");
+}
+clickButton.addEventListener("click", handleClick);
+
+// Remove event listener
+clickButton.removeEventListener("click", handleClick);
+const box = document.createElement("div");
+box.textContent = "Hover, click or double-click me";
+box.style.padding = "20px";
+box.style.border = "1px solid gray";
+document.body.appendChild(box);
+
+const nameInput = document.createElement("input");
+nameInput.placeholder = "Type here";
+document.body.appendChild(nameInput);
+
+function handler(event) {
+  console.log(event.type);
+}
+
+// Mouse events
+box.addEventListener("click", handler);
+box.addEventListener("dblclick", handler);
+box.addEventListener("mouseenter", handler);
+box.addEventListener("mouseleave", handler);
+
+// Keyboard and form events
+nameInput.addEventListener("keydown", handler);
+nameInput.addEventListener("keyup", handler);
+nameInput.addEventListener("focus", handler);
+nameInput.addEventListener("input", handler);
+nameInput.addEventListener("change", handler);
+
+// Window events
+window.addEventListener("load", handler);
+window.addEventListener("resize", handler);
+
+let count = 0;
+
+const counterDisplay = document.createElement("p");
+counterDisplay.textContent = count;
+
+const plusBtn = document.createElement("button");
+plusBtn.textContent = "+";
+const minusBtn = document.createElement("button");
+minusBtn.textContent = "-";
+const resetBtn = document.createElement("button");
+resetBtn.textContent = "Reset";
+
+function updateCount() {
+  counterDisplay.textContent = count;
+}
+
+plusBtn.addEventListener("click", () => {
+  count++;
+  updateCount();
+});
+
+minusBtn.addEventListener("click", () => {
+  if (count > 0) {
+    count--;
+  }
+  updateCount();
+});
+
+resetBtn.addEventListener("click", () => {
+  count = 0;
+  updateCount();
+});
+
+document.body.append(counterDisplay, plusBtn, minusBtn, resetBtn);
